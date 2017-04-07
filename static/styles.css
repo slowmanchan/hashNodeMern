@@ -1,0 +1,20 @@
+* {
+  font-family: Arial;
+}
+.bug-table, td, th, thead {
+  border-bottom: 1px solid #ddd;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 10px;
+}
+
+th {
+  color: white;
+  background-color: #FF8C00;
+}
+
+tr:nth-child(even) {
+  background-color: #ddd;
+}

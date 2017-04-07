@@ -1,0 +1,24 @@
+{
+  "name": "ch1.2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel --presets react src --watch --out-dir static",
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
+    "body-parser": "^1.17.1",
+    "browserify": "^14.3.0",
+    "express": "^4.15.2",
+    "jquery": "^3.2.1",
+    "mongodb": "^2.2.25",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
