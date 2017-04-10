@@ -11,16 +11,25 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'static')));
 
-app.get('/api/bugs', function(req, res, next) {
-  db.collection('bugs').find().toArray(function(err, docs){
-		res.json(docs);
+app.get('/api/bugs/', function(req, res, next) {
+	var filter = {};
+	if (req.query.priority) {
+		filter.priority = req.query.priority;
+	}
+
+	if (req.query.status) {
+		filter.status = req.query.status;
+	}
+
+	db.collection('bugs').find(filter).toArray(function(err, doc) {
+		res.json(doc)
 	});
 });
 
 app.post('/api/bugs', function(req, res) {
-  db.collection('bugs').insertOne(req.body, function(err, result) {
+	db.collection('bugs').insertOne(req.body, function(err, result) {
 		assert.equal(null, err);
-    db.collection('bugs').find({_id: result.insertedId}).limit(1).next(function(err, doc) {
+		db.collection('bugs').find({_id: result.insertedId}).limit(1).next(function(err, doc) {
 			assert.equal(null, err);
 			res.json(doc);
 		});
@@ -33,6 +42,6 @@ MongoClient.connect('mongodb://localhost/bugsdb', function(err, dbConnection) {
 	console.log("connected to dbs");
 	db = dbConnection;
 	app.listen(3000, function() {
-	  console.log('Server has started on port 3000');
+		console.log('Server has started on port 3000');
 	});
 });
