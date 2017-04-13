@@ -1,34 +1,85 @@
 var React = require('react');
+var $ = require('jquery');
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
+import Avatar from 'material-ui/Avatar';
+
 var BugAdd = React.createClass({
+	getInitialState: function() {
+		return (
+			{
+				owner: '',
+				title: '',
+			}
+		)
+	},
 
 	render: function() {
 		return (
-			<div>
-			<form name='bugAdd'>
-			Owner
-			<input type='text' name='owner' />
-			Title
-			<input type='text' name='title'  />
-			<input type='button' value='add' onClick={this.handleSubmit} />
-			</form>
-			</div>
+			<Card
+			  initiallyExpanded={true}>
+			<CardHeader
+			  title='Add Bug'
+				subtitle='Enter an owner and title'
+				showExpandableButton={true}
+				actAsExpander={true}
+				avatar={
+					<Avatar
+					  icon={
+							<FontIcon className='fa fa-plus'></FontIcon>
+						}
+					/>
+				}
+			  />
+			<CardText
+			  expandable={true}
+				style={{paddingTop: 0}}
+				>
+			<TextField
+			  floatingLabelText='Owner'
+				onChange={this.handleOwner}
+				value={this.state.owner}
+				/>
+			<TextField
+			  floatingLabelText='Title'
+				onChange={this.handleTitle}
+				value={this.state.title}
+				/>
+			<RaisedButton
+			  label='Add'
+				onTouchTap={this.handleSubmit}
+				/>
+			</CardText>
+			</Card>
 		)
 
 	},
-	handleSubmit(e) {
-		e.preventDefault();
-		var form = document.forms.bugAdd;
 
-		this.props.addBug({
-			owner: form.owner.value,
-			status: 'open',
-			priority: 'safe',
-			title: form.title.value,
-		});
+	handleOwner: function(e) {
+		this.setState({
+			owner: e.target.value
+		})
+	},
 
-		form.owner.value = '';
-		form.title.value = '';
+	handleTitle: function(e) {
+		this.setState({
+			title: e.target.value
+		})
+	},
+
+	handleSubmit() {
+		console.log(this.state);
+
+    this.props.addBug({
+			owner: this.state.owner,
+			title: this.state.title,
+			priority: 'P1',
+			status: 'open'
+		})
+		this.state.owner = '';
+		this.state.title = '';
 	}
 });
-
 module.exports = BugAdd

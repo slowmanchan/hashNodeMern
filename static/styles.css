@@ -1,4 +1,4 @@
-* {
+/** {
   font-family: Arial;
 }
 .bug-table, td, th, thead {
@@ -17,4 +17,8 @@ th {
 
 tr:nth-child(even) {
   background-color: #ddd;
+}*/
+
+body {
+  margin: 0;
 }

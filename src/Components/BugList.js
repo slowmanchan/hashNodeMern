@@ -4,8 +4,12 @@ var BugAdd = require('./BugAdd');
 var BugFilter = require('./BugFilter');
 var Link = require('react-router').Link;
 var Router = require('react-router');
+import AppBar from 'material-ui/AppBar';
+import Paper from 'material-ui/Paper';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 var BugList = React.createClass({
+
   getInitialState: function() {
     return {
       bugs: []
@@ -67,7 +71,10 @@ var BugList = React.createClass({
     console.log("Rendering bug list, num items:", this.state.bugs.length);
     return (
       <div>
-      <h1>Awesomesss</h1>
+      <AppBar
+        title="Bugger"
+        showMenuIconButton={true}
+      />
       <BugFilter
         submitHandler={this.changeFilter}
         initFilter={this.props.location.query}/>
@@ -82,13 +89,13 @@ var BugList = React.createClass({
 var BugRow = React.createClass({
   render: function() {
     return (
-      <tr>
-      <td><Link to={'/bugs/' + this.props.bug._id}>{this.props.bug._id}</Link></td>
-      <td>{this.props.bug.status}</td>
-      <td>{this.props.bug.priority}</td>
-      <td>{this.props.bug.owner}</td>
-      <td>{this.props.bug.title}</td>
-      </tr>
+      <TableRow>
+        <TableRowColumn style={{width: 180}}><Link to={'/bugs/' + this.props.bug._id}>{this.props.bug._id}</Link></TableRowColumn>
+        <TableRowColumn style={{width: 40}}>{this.props.bug.status}</TableRowColumn>
+        <TableRowColumn style={{width: 40}}>{this.props.bug.priority}</TableRowColumn>
+        <TableRowColumn style={{width: 60}}>{this.props.bug.owner}</TableRowColumn>
+        <TableRowColumn style={{width: 60}}>{this.props.bug.title}</TableRowColumn>
+      </TableRow>
     )
   }
 });
@@ -101,20 +108,29 @@ var BugTable = React.createClass({
     });
 
     return (
-      <table className='bug-table'>
-      <thead>
-      <tr>
-      <th>id</th>
-      <th>Status</th>
-      <th>Priority</th>
-      <th>Owner</th>
-      <th>Title</th>
-      </tr>
-      </thead>
-      <tbody>
-      {bugRows}
-      </tbody>
-      </table>
+      <Paper rounded={false}>
+        <Table
+          >
+          <TableHeader
+            displaySelectAll={false}
+            adjustForCheckbox={false}
+            >
+            <TableRow>
+              <TableHeaderColumn style={{width: 180}}>Id</TableHeaderColumn>
+              <TableHeaderColumn style={{width: 40}}>Status</TableHeaderColumn>
+              <TableHeaderColumn style={{width: 40}}>Priority</TableHeaderColumn>
+              <TableHeaderColumn style={{width: 60}}>Owner</TableHeaderColumn>
+              <TableHeaderColumn style={{width: 60}}>Title</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody
+            showRowHover={true}
+            stripedRows={true}
+            >
+            {bugRows}
+          </TableBody>
+        </Table>
+      </Paper>
     )
   }
 });
