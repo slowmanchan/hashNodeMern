@@ -10,40 +10,47 @@ import Avatar from 'material-ui/Avatar';
 
 injectTapEventPlugin();
 
+var anyValue = '*';
+
 var BugFilter = React.createClass({
   getInitialState: function() {
     return {
-      priority: this.props.initFilter.priority,
-      status: this.props.initFilter.status
+      priority: this.props.initFilter.priority || anyValue,
+      status: this.props.initFilter.status || anyValue
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if (nextProps.initFilter.status === this.state.status
-      && nextProps.initFilter.priority === this.state.priority) {
-        console.log("BugFilter: componentWillRecieveProps, no change");
-        return;
+  componentWillReceiveProps: function(newProps) {
+    var newFilter = {
+      status: newProps.initFilter.status || anyValue,
+      priority: newProps.initFilter.priority || anyValue
+    };
+
+    if (newFilter.status === this.state.status
+      && newFilter.priority === this.state.priority) {
+        console.log('BugFilter: componentWillReceiveProps, no change');
+        return
       }
-      console.log("BugFilter: componentWillRecieveProps, new filter:" + nextProps.initFilter);
-      this.setState({status: nextProps.initFilter.status, priority: nextProps.initFilter.priority});
+      console.log("BugFilter: componentWillRecieveProps, new filter:" + newFilter.priority);
+      this.setState({status: newFilter.status, priority: newFilter.priority});
     },
 
     handleClick: function() {
       var newFilter = {};
-      if (this.state.priority) newFilter.priority = this.state.priority;
-      if (this.state.status) newFilter.status = this.state.status;
+      if (this.state.priority != anyValue) newFilter.priority = this.state.priority;
+      if (this.state.status != anyValue) newFilter.status = this.state.status;
       this.props.submitHandler(newFilter);
     },
 
-    handlePriority: function(e) {
+    handlePriority: function(e, i, value) {
       this.setState({
-        priority: e.target.value
+        priority: value
       });
     },
 
-    handleStatus: function(e) {
+    handleStatus: function(e, i, value) {
       this.setState({
-        status: e.target.value
+        status: value
       });
     },
 
@@ -67,19 +74,23 @@ var BugFilter = React.createClass({
         <CardText expandable={true}>
         <SelectField
           floatingLabelText='Priority'
-          value={1}
-          onChange={this.handlePriority}>
-        <MenuItem value={1} primaryText='P1'/>
-        <MenuItem value={2} primaryText='P2' />
-        <MenuItem value={3} primaryText='P3'/>
+          value={this.state.priority}
+          onChange={this.handlePriority}
+          >
+        <MenuItem value={anyValue} primaryText='Any'/>
+        <MenuItem value='P1' primaryText='P1'/>
+        <MenuItem value='P2' primaryText='P2' />
+        <MenuItem value='P3' primaryText='P3'/>
         </SelectField>
 
         <SelectField
           floatingLabelText='Status'
-          value={1}
-          onChange={this.handleStatus}>
-        <MenuItem value={1} primaryText='Open'/>
-        <MenuItem value={2} primaryText='Closed'/>
+          value={this.state.status}
+          onChange={this.handleStatus}
+          >
+        <MenuItem value={anyValue} primaryText='Any'/>
+        <MenuItem value='open' primaryText='Open'/>
+        <MenuItem value='closed' primaryText='Closed'/>
         </SelectField>
         <br/>
         <RaisedButton onTouchTap={this.handleClick} label="SUBMIT"/>

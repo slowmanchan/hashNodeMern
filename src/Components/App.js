@@ -7,7 +7,6 @@ var Route = require('react-router').Route;
 var BugEdit = require('./BugEdit');
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-
 var NotFound = React.createClass({
 	render: function() {
 		return (
